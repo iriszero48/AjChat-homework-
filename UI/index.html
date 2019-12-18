@@ -735,7 +735,7 @@
                 console.log(evt.data);
                 //MarkDown支持
                 var html = marked(evt.data);
-				document.getElementById("result").innerHTML = html;
+		document.getElementById("result").innerHTML = html;
                 $('#chat-display').append('<p>'+'\n'+'<div id="result">'+ evt.data +'</div>'+'\n' + '</p>');
 
                 let cd = document.getElementById('chat-display');
