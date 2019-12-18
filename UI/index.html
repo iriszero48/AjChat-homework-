@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Aj Chat v1.0</title>
-	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <!--Index-->
     <style type="text/css">
         * {
@@ -733,16 +733,14 @@
                 }
             } else {
                 console.log(evt.data);
-                //$('#chat-display').append('<p>' + evt.data + '</p>');
-                //let cd = document.getElementById('chat-display');
-                //cd.scrollTop = cd.scrollHeight;
-				var html = marked(evt.data);
-				document.getElementById("result").innerHTML = html;
+                $('#chat-display').append('<p>' + evt.data + '</p>');
+                let cd = document.getElementById('chat-display');
+                cd.scrollTop = cd.scrollHeight;
             }
         };
         ws.onclose = (evt) => console.log("connect closed.");
     </script>
-</head> 
+</head>
 <body>
 <div id="chat-page" style="display: none">
     <div id="up">
@@ -752,8 +750,7 @@
             </strong>
         </nav>
     </div>
-	<div id="result"></div>
-    <!--<div id="chat-display">-->
+    <div id="chat-display">
         <p>
             <b class="un">admin</b>: aj!
         </p>
