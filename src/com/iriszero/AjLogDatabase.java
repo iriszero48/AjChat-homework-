@@ -5,7 +5,7 @@ import java.util.List;
 
 public class AjLogDatabase extends AjDatabase implements ILogDatabase
 {
-    List<String> logs;
+    private List<String> logs;
 
     AjLogDatabase(String path) throws IOException
     {
@@ -20,14 +20,20 @@ public class AjLogDatabase extends AjDatabase implements ILogDatabase
     }
 
     @Override
-    public List<UserMessage> GetAll()
+    public List<String> GetAllString()
     {
-        return null;
+        return logs;
     }
 
     @Override
     public void Add(UserMessage msg)
     {
-
+        try
+        {
+            AppendLine(msg.ToString());
+        }
+        catch (Exception ignored)
+        {
+        }
     }
 }

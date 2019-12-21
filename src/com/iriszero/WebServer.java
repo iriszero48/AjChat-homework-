@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class WebServer
+class WebServer
 {
     private List<Thread> pool = new ArrayList<>();
     private ServerSocket ss;

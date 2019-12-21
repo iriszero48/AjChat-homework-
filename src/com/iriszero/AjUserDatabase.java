@@ -1,7 +1,6 @@
 package com.iriszero;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,18 +38,25 @@ public class AjUserDatabase extends AjDatabase implements IUserDatabase
     {
         try
         {
-            if (!data.containsKey(username)) AppendLine(username + " " + password);
+            if (data.containsKey(username))
+            {
+                return "Invalid Username/Password";
+            }
+            else
+            {
+                AppendLine(username + " " + password);
+            }
         }
         catch (IOException e)
         {
             return e.getMessage();
         }
-        return "";
+        return "true";
     }
 
     @Override
     public String CheckUser(String username, String password)
     {
-        return data.containsKey(username) && password.equals(data.get(username)) ? "" :"Invalid Username/Password";
+        return data.containsKey(username) && password.equals(data.get(username)) ? "true" :"Invalid Username/Password";
     }
 }

@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public class WebSocket
+class WebSocket
 {
     private static byte[] SHA1Hash(byte[] bytes) throws NoSuchAlgorithmException
     {

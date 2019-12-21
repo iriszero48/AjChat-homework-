@@ -12,7 +12,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
-public class ChatServer
+class ChatServer
 {
     private Lock lock = new ReentrantLock();
     private ILogDatabase ld;
@@ -139,9 +139,9 @@ public class ChatServer
                             System.out.println(String.join(" ", up));
                             String msg = CheckUser(up);
                             outputStream.write(WebSocket.Encode(msg));
-                            if (msg.equals("") && up[0].equals("l"))
+                            if (msg.equals("true") && up[0].equals("l"))
                             {
-                                ld.GetAll().forEach(x -> SyncMessage(x.ToString(), id));
+                                ld.GetAllString().forEach(x -> SyncMessage(x, id));
                                 while (true)
                                 {
                                     len = inputStream.read(buf, 0, 4096);
