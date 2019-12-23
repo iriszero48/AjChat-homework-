@@ -1,5 +1,7 @@
 package com.iriszero;
 
+import com.google.gson.Gson;
+
 class UserMessage
 {
     String Date;
@@ -15,10 +17,6 @@ class UserMessage
 
     String ToString()
     {
-        return "<b class=\"un\">" + Username +
-                "</b>:&nbsp;&nbsp;&nbsp;&nbsp;" +
-                Message +
-                "<sub>&nbsp;&nbsp;&nbsp;&nbsp;" +
-                Date + "</sub>";
+        return new Gson().toJson(this);
     }
 }
