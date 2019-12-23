@@ -4,72 +4,86 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
 
-public class MySqlUserDatabase extends MySqlDatabase implements IUserDatabase
+public class MySqlLogDatabase extends MySqlDatabase implements ILogDatabase
 {
-    MySqlUserDatabase(String username, String password, String url) throws ClassNotFoundException, SQLException
+    MySqlLogDatabase(String username, String password, String url) throws ClassNotFoundException, SQLException
     {
         super(username, password, url);
     }
 
     @Override
-    public String AddUser(String username, String password)
+    public List<UserMessage> GetLast(long n)
     {
         try
         {
-            boolean exist = false;
+            List<UserMessage> res = new LinkedList<>();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from user");
+            ResultSet rs = stmt.executeQuery("select * from log order by id desc limit " + n);
             while (rs.next())
             {
-                if (username.equals(rs.getString("username")))
-                {
-                    exist = true;
-                    break;
-                }
+                res.add(
+                        new UserMessage(
+                                rs.getString("username"),
+                                rs.getString("message"),
+                                rs.getString("date")));
             }
             rs.close();
             stmt.close();
-            if (exist) return "Invalid Username/Password";
-            PreparedStatement ps = conn.prepareStatement("insert into user values (?,?)");
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ps.executeLargeUpdate();
-            ps.close();
-            return "true";
+            return res;
         }
         catch (Exception e)
         {
             e.printStackTrace(System.err);
-            return "Invalid Username/Password";
+            return new LinkedList<>();
         }
     }
 
     @Override
-    public String CheckUser(String username, String password)
+    public List<String> GetAllString()
     {
         try
         {
-            boolean succ = false;
+            List<String> res = new LinkedList<>();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from user");
+            ResultSet rs = stmt.executeQuery("select * from log order by id");
             while (rs.next())
             {
-                if (username.equals(rs.getString("username")) &&
-                        password.equals(rs.getString("password")))
-                {
-                    succ = true;
-                    break;
-                }
+                res.add(
+                        new UserMessage(
+                                rs.getString("username"),
+                                rs.getString("message"),
+                                rs.getString("date")).ToString());
             }
             rs.close();
             stmt.close();
-            return succ ? "true" : "Invalid Username/Password";
+            return res;
         }
         catch (Exception e)
         {
             e.printStackTrace(System.err);
-            return "Invalid Username/Password";
+            return new LinkedList<>();
+        }
+    }
+
+    @Override
+    public void Add(UserMessage msg)
+    {
+        try
+        {
+            PreparedStatement ps = conn.prepareStatement(
+                    "insert into log (username, message, date) values (?,?,?)");
+            ps.setString(1, msg.Username);
+            ps.setString(2, msg.Message);
+            ps.setString(3, msg.Date);
+            ps.executeLargeUpdate();
+            ps.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace(System.err);
         }
     }
 }
