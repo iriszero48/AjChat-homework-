@@ -1,6 +1,8 @@
 package com.iriszero;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,18 +16,15 @@ public class AjUserDatabase extends AjDatabase implements IUserDatabase
         Load();
     }
 
-    void Load() throws IOException
+    private void Load() throws IOException
     {
         try
         {
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            String line;
-            while ((line = br.readLine()) != null)
+            Files.readAllLines(Paths.get(path)).forEach(i ->
             {
-                String[] up = line.split(" ");
+                String[] up = i.split(" ");
                 data.put(up[0], up[1]);
-            }
-            br.close();
+            });
         }
         catch (FileNotFoundException e)
         {
@@ -44,6 +43,7 @@ public class AjUserDatabase extends AjDatabase implements IUserDatabase
             }
             else
             {
+                data.put(username, password);
                 AppendLine(username + " " + password);
             }
         }
@@ -57,6 +57,6 @@ public class AjUserDatabase extends AjDatabase implements IUserDatabase
     @Override
     public String CheckUser(String username, String password)
     {
-        return data.containsKey(username) && password.equals(data.get(username)) ? "true" :"Invalid Username/Password";
+        return data.containsKey(username) && password.equals(data.get(username)) ? "true" : "Invalid Username/Password";
     }
 }
