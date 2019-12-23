@@ -18,13 +18,6 @@ class WebServer
     WebServer(String webPath, int port, int threadNum) throws IOException
     {
         ss = new ServerSocket(port);
-        String webPage = Files.readString(Paths.get(webPath));
-        int len = webPage.getBytes(StandardCharsets.UTF_8).length;
-        byte[] http = ("HTTP/1.1 200 OK\r\n" +
-                "Content-Length: " + len +
-                "\r\nServer: iriszero/AjChat/1.0" +
-                "\r\nContent-Type: text/html\r\n\r\n" +
-                webPage).getBytes(StandardCharsets.UTF_8);
         IntStream.range(0, threadNum).forEach(i ->
                 pool.add(new Thread(() ->
                 {
@@ -33,6 +26,13 @@ class WebServer
                     {
                         try
                         {
+                            String webPage = Files.readString(Paths.get(webPath));
+                            int len = webPage.getBytes(StandardCharsets.UTF_8).length;
+                            byte[] http = ("HTTP/1.1 200 OK\r\n" +
+                                    "Content-Length: " + len +
+                                    "\r\nServer: iriszero/AjChat/1.0" +
+                                    "\r\nContent-Type: text/html\r\n\r\n" +
+                                    webPage).getBytes(StandardCharsets.UTF_8);
                             Socket sock = ss.accept();
                             int bufLen = sock.getInputStream().read(buf);
                             System.out.println("<----------" +
