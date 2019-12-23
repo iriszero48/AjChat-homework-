@@ -30,7 +30,9 @@ public class AjLogDatabase extends AjDatabase implements ILogDatabase
     {
         try
         {
-            AppendLine(msg.ToString());
+            String str = msg.ToString();
+            logs.add(str);
+            AppendLine(str);
         }
         catch (Exception ignored)
         {
