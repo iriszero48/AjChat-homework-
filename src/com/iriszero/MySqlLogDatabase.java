@@ -9,8 +9,6 @@ import java.util.List;
 
 public class MySqlLogDatabase extends MySqlDatabase implements ILogDatabase
 {
-
-
     MySqlLogDatabase(String username, String password, String url) throws ClassNotFoundException, SQLException
     {
         super(username, password, url);
