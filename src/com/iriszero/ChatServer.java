@@ -63,7 +63,7 @@ class ChatServer
         }
     }
 
-    private String CheckUser(String[] up) throws IOException
+    private String CheckUser(String[] up)
     {
         if (up.length != 3 || !up[2].matches("^[A-Za-z0-9]{32}$"))
         {
@@ -80,8 +80,8 @@ class ChatServer
         {
             e.printStackTrace(System.err);
         }
-        if (up[0].equals("l")) return ud.CheckUser(up[1],up[2]);
-        if (up[0].equals("r")) return ud.AddUser(up[1],up[2]);
+        if (up[0].equals("l")) return ud.CheckUser(up[1], up[2]);
+        if (up[0].equals("r")) return ud.AddUser(up[1], up[2]);
         return "Invalid Username/Password";
     }
 
@@ -115,7 +115,7 @@ class ChatServer
                         Socket sock = ws.accept();
                         InputStream inputStream = sock.getInputStream();
                         outputStream = sock.getOutputStream();
-                        byte[] buf = new byte[4096];
+                        byte[] buf = new byte[65536];
                         int len;
                         StringBuilder request = new StringBuilder();
                         while ((len = inputStream.read(buf, 0, 4096)) == 4096)
@@ -144,16 +144,13 @@ class ChatServer
                                 ld.GetAllString().forEach(x -> SyncMessage(x, id));
                                 while (true)
                                 {
-                                    len = inputStream.read(buf, 0, 4096);
-                                    String message = WebSocket.Decode(buf, len)
-                                            .replace("<", "&lt;")
-                                            .replace(">", "&gt;")
-                                            .replace(" ", "&nbsp;");
+                                    len = inputStream.read(buf, 0, 65536);
+                                    String message = WebSocket.Decode(buf, len);
                                     if (!message.equals(end))
                                     {
                                         UserMessage send = new UserMessage(URLDecoder.decode(
                                                 new String(Base64.getDecoder().decode(up[1])),
-                                                StandardCharsets.UTF_8),message,new java.util.Date().toString());
+                                                StandardCharsets.UTF_8), message, new java.util.Date().toString());
                                         System.out.println(send.ToString());
                                         UpdateMessage(send);
                                     }
