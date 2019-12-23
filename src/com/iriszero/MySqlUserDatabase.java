@@ -7,7 +7,6 @@ import java.sql.Statement;
 
 public class MySqlUserDatabase extends MySqlDatabase implements IUserDatabase
 {
-
     MySqlUserDatabase(String username, String password, String url) throws ClassNotFoundException, SQLException
     {
         super(username, password, url);
