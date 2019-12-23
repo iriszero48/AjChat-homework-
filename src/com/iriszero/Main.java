@@ -34,7 +34,7 @@ public class Main
         catch (Exception e)
         {
             e.printStackTrace(System.err);
+            System.exit(1);
         }
     }
 }
-
